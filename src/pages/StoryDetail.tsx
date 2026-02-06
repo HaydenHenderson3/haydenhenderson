@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import Markdown from 'react-markdown'
 import remarkBreaks from 'remark-breaks'
 import { stories } from '../data/papers'
+import { preserveIndentation } from '../utils/markdown'
 
 function StoryDetail() {
   const { id } = useParams<{ id: string }>()
@@ -48,7 +49,7 @@ function StoryDetail() {
         </header>
 
         <div className="prose prose-lg max-w-none text-gray-700">
-          <Markdown remarkPlugins={[remarkBreaks]}>{story.text}</Markdown>
+          <Markdown remarkPlugins={[remarkBreaks]}>{preserveIndentation(story.text)}</Markdown>
         </div>
       </article>
     </div>

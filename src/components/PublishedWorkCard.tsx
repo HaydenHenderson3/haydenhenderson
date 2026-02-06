@@ -1,6 +1,7 @@
 import Markdown from 'react-markdown'
 import remarkBreaks from 'remark-breaks'
 import { PublishedWork } from '../types'
+import { preserveIndentation } from '../utils/markdown'
 
 interface PublishedWorkCardProps {
   work: PublishedWork
@@ -37,7 +38,7 @@ function PublishedWorkCard({ work }: PublishedWorkCardProps) {
           </div>
 
           <div className="prose prose-lg max-w-none mb-6 text-gray-700">
-            <Markdown remarkPlugins={[remarkBreaks]}>{work.description}</Markdown>
+            <Markdown remarkPlugins={[remarkBreaks]}>{preserveIndentation(work.description)}</Markdown>
           </div>
 
           {work.link && (

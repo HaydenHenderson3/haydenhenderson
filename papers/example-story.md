@@ -12,7 +12,7 @@ createdAt: 2026-02-06T00:00:00.000Z
     “—There was. Largest I’ve seen.”
     “That don’t mean they’ve stuck around, Billy.”
     “Oh they’re here, you ol’Duck. Sure as hell’s frozen over.”
-The lake, mirroring the blue of an early morning mountain, dispels fog to the surrounding spruce. Two fine lines drawn into the still water, disappearing under the surface. A wire grill, coals red, a flask of coffee reaching hot, a can of sardines cracked, oil spitting.
+    The lake, mirroring the blue of an early morning mountain, dispels fog to the surrounding spruce. Two fine lines drawn into the still water, disappearing under the surface. A wire grill, coals red, a flask of coffee reaching hot, a can of sardines cracked, oil spitting.
 Duckworth pats around his vest with his free hand.
     “You want a cigarette, Billy?”
     “No.”

@@ -1,6 +1,7 @@
 import Markdown from 'react-markdown'
 import remarkBreaks from 'remark-breaks'
 import { Review } from '../types'
+import { preserveIndentation } from '../utils/markdown'
 
 interface ReviewCardProps {
   review: Review
@@ -46,7 +47,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       )}
 
       <div className="prose prose-lg max-w-none text-gray-700">
-        <Markdown remarkPlugins={[remarkBreaks]}>{review.text}</Markdown>
+        <Markdown remarkPlugins={[remarkBreaks]}>{preserveIndentation(review.text)}</Markdown>
       </div>
     </article>
   )
