@@ -10,7 +10,18 @@ function Stories() {
   const [stories, setStories] = useState<Story[]>([])
 
   useEffect(() => {
-    setStories(storage.stories.get())
+    const loadStories = () => {
+      setStories(storage.stories.get())
+    }
+    
+    loadStories()
+    
+    // Listen for storage updates (e.g., from paper ingestion)
+    window.addEventListener('storageUpdated', loadStories)
+    
+    return () => {
+      window.removeEventListener('storageUpdated', loadStories)
+    }
   }, [])
 
   const handleAddStory = (story: Story) => {

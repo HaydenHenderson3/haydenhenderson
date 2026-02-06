@@ -10,7 +10,18 @@ function PublishedWorks() {
   const [works, setWorks] = useState<PublishedWork[]>([])
 
   useEffect(() => {
-    setWorks(storage.publishedWorks.get())
+    const loadWorks = () => {
+      setWorks(storage.publishedWorks.get())
+    }
+    
+    loadWorks()
+    
+    // Listen for storage updates (e.g., from paper ingestion)
+    window.addEventListener('storageUpdated', loadWorks)
+    
+    return () => {
+      window.removeEventListener('storageUpdated', loadWorks)
+    }
   }, [])
 
   const handleAddWork = (work: PublishedWork) => {

@@ -66,9 +66,48 @@ To change the password, edit `OWNER_PASSWORD` in `src/contexts/OwnerContext.tsx`
 - **Profile Picture**: Place a `profile.jpg` file in the `public` directory (or update the path in `ReviewCard.tsx`)
 - **Owner Password**: Change `OWNER_PASSWORD` in `src/contexts/OwnerContext.tsx`
 
+## Papers Ingestion
+
+You can ingest markdown files into your book reviews, short stories, and published works in two ways:
+
+### Method 1: Browser Upload (Recommended for Published Website)
+
+1. Enable Owner Mode on your published website (click "Admin" in the footer)
+2. Click "Import Papers" in the footer
+3. Upload your markdown files (drag and drop or click to select)
+4. Files will be automatically ingested into the appropriate collections
+
+This method works directly on your published website - no build step required!
+
+### Method 2: Command Line (For Local Development)
+
+1. Place your markdown files in the `papers` folder
+2. Each file should start with frontmatter (YAML) specifying the type and metadata
+3. Run the ingestion script:
+
+```bash
+npm run ingest:papers
+```
+
+### Markdown File Format
+
+See `papers/README.md` for detailed format specifications. Each file should include:
+- `type`: Either `review`, `story`, or `published`
+- `title`: The title of the item
+- `createdAt`: ISO date string (optional, defaults to current date)
+- Additional fields depending on type (see examples in `papers/` folder)
+
+### Example Files
+
+Example markdown files are provided in the `papers/` folder:
+- `example-review.md` - Book review format
+- `example-story.md` - Short story format
+- `example-published.md` - Published work format
+
 ## Data Storage
 
-All reviews and stories are stored in browser localStorage:
+All reviews, stories, and published works are stored in browser localStorage:
 - `reviews`: Array of review objects
 - `stories`: Array of story objects
+- `publishedWorks`: Array of published work objects
 

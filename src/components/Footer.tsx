@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useOwner } from '../contexts/OwnerContext'
+import PaperIngestion from './PaperIngestion'
 
 function Footer() {
   const { isOwner, toggleOwnerMode, enableOwnerMode } = useOwner()
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
   const [password, setPassword] = useState('')
+  const [showPaperIngestion, setShowPaperIngestion] = useState(false)
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,17 +66,33 @@ function Footer() {
           )}
 
           {isOwner && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-700 font-medium">Owner Mode</span>
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-700 font-medium">Owner Mode</span>
+                <button
+                  onClick={toggleOwnerMode}
+                  className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  Exit
+                </button>
+              </div>
               <button
-                onClick={toggleOwnerMode}
-                className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                onClick={() => setShowPaperIngestion(!showPaperIngestion)}
+                className="text-xs text-slate-600 hover:text-slate-800 transition-colors underline"
               >
-                Exit
+                {showPaperIngestion ? 'Hide' : 'Import Papers'}
               </button>
             </div>
           )}
         </div>
+        
+        {isOwner && showPaperIngestion && (
+          <div className="mt-6 max-w-2xl mx-auto">
+            <PaperIngestion onIngestComplete={() => {
+              // Pages will automatically refresh via storageUpdated event
+            }} />
+          </div>
+        )}
       </div>
     </footer>
   )

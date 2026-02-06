@@ -10,7 +10,18 @@ function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([])
 
   useEffect(() => {
-    setReviews(storage.reviews.get())
+    const loadReviews = () => {
+      setReviews(storage.reviews.get())
+    }
+    
+    loadReviews()
+    
+    // Listen for storage updates (e.g., from paper ingestion)
+    window.addEventListener('storageUpdated', loadReviews)
+    
+    return () => {
+      window.removeEventListener('storageUpdated', loadReviews)
+    }
   }, [])
 
   const handleAddReview = (review: Review) => {
