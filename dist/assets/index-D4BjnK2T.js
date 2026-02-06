@@ -100,9 +100,12 @@ See the example files in this folder:
 - \`example-published.md\` — Published work
 `,nk=`---
 type: review
-title: Example Book Review
+title: The Sun Also Rises
 createdAt: 2024-01-15T00:00:00.000Z
----`,rk=`---
+---
+
+
+This book is good!`,rk=`---
 type: published
 title: Example Published Work
 description: This is a brief description of the published work
