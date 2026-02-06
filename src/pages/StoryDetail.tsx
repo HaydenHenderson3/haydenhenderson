@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
+import Markdown from 'react-markdown'
 import { stories } from '../data/papers'
 
 function StoryDetail() {
@@ -45,10 +46,8 @@ function StoryDetail() {
           <p className="text-sm text-gray-500">{date}</p>
         </header>
 
-        <div className="prose prose-lg max-w-none">
-          <div className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base sm:text-lg">
-            {story.text}
-          </div>
+        <div className="prose prose-lg max-w-none text-gray-700">
+          <Markdown>{story.text}</Markdown>
         </div>
       </article>
     </div>

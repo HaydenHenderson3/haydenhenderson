@@ -3,7 +3,24 @@ import { stories } from '../data/papers'
 
 function Stories() {
   const getExcerpt = (text: string) => {
-    return text.length > 120 ? text.substring(0, 120) + '...' : text
+    // Strip markdown syntax for a clean plaintext excerpt
+    const plain = text
+      .replace(/^#{1,6}\s+/gm, '')       // headings
+      .replace(/\*\*(.+?)\*\*/g, '$1')   // bold
+      .replace(/\*(.+?)\*/g, '$1')       // italic
+      .replace(/__(.+?)__/g, '$1')       // bold alt
+      .replace(/_(.+?)_/g, '$1')         // italic alt
+      .replace(/~~(.+?)~~/g, '$1')       // strikethrough
+      .replace(/`(.+?)`/g, '$1')         // inline code
+      .replace(/\[(.+?)\]\(.+?\)/g, '$1') // links
+      .replace(/!\[.*?\]\(.+?\)/g, '')   // images
+      .replace(/^\s*[-*+]\s+/gm, '')     // unordered lists
+      .replace(/^\s*\d+\.\s+/gm, '')     // ordered lists
+      .replace(/^\s*>\s+/gm, '')         // blockquotes
+      .replace(/\n{2,}/g, ' ')           // collapse multiple newlines
+      .replace(/\n/g, ' ')               // remaining newlines
+      .trim()
+    return plain.length > 120 ? plain.substring(0, 120) + '...' : plain
   }
 
   const formatDate = (dateString: string) => {

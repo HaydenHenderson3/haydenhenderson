@@ -1,3 +1,4 @@
+import Markdown from 'react-markdown'
 import { PublishedWork } from '../types'
 
 interface PublishedWorkCardProps {
@@ -34,10 +35,8 @@ function PublishedWorkCard({ work }: PublishedWorkCardProps) {
             )}
           </div>
 
-          <div className="prose prose-lg max-w-none mb-6">
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
-              {work.description}
-            </p>
+          <div className="prose prose-lg max-w-none mb-6 text-gray-700">
+            <Markdown>{work.description}</Markdown>
           </div>
 
           {work.link && (

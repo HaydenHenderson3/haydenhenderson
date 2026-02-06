@@ -1,3 +1,4 @@
+import Markdown from 'react-markdown'
 import { Review } from '../types'
 
 interface ReviewCardProps {
@@ -43,10 +44,8 @@ function ReviewCard({ review }: ReviewCardProps) {
         </div>
       )}
 
-      <div className="prose prose-lg max-w-none">
-        <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
-          {review.text}
-        </p>
+      <div className="prose prose-lg max-w-none text-gray-700">
+        <Markdown>{review.text}</Markdown>
       </div>
     </article>
   )
