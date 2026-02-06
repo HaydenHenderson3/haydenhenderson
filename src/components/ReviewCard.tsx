@@ -1,4 +1,5 @@
 import Markdown from 'react-markdown'
+import remarkBreaks from 'remark-breaks'
 import { Review } from '../types'
 
 interface ReviewCardProps {
@@ -45,7 +46,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       )}
 
       <div className="prose prose-lg max-w-none text-gray-700">
-        <Markdown>{review.text}</Markdown>
+        <Markdown remarkPlugins={[remarkBreaks]}>{review.text}</Markdown>
       </div>
     </article>
   )

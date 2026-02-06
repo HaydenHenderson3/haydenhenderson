@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import Markdown from 'react-markdown'
+import remarkBreaks from 'remark-breaks'
 import { stories } from '../data/papers'
 
 function StoryDetail() {
@@ -47,7 +48,7 @@ function StoryDetail() {
         </header>
 
         <div className="prose prose-lg max-w-none text-gray-700">
-          <Markdown>{story.text}</Markdown>
+          <Markdown remarkPlugins={[remarkBreaks]}>{story.text}</Markdown>
         </div>
       </article>
     </div>

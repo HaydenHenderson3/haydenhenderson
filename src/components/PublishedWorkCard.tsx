@@ -1,4 +1,5 @@
 import Markdown from 'react-markdown'
+import remarkBreaks from 'remark-breaks'
 import { PublishedWork } from '../types'
 
 interface PublishedWorkCardProps {
@@ -36,7 +37,7 @@ function PublishedWorkCard({ work }: PublishedWorkCardProps) {
           </div>
 
           <div className="prose prose-lg max-w-none mb-6 text-gray-700">
-            <Markdown>{work.description}</Markdown>
+            <Markdown remarkPlugins={[remarkBreaks]}>{work.description}</Markdown>
           </div>
 
           {work.link && (
