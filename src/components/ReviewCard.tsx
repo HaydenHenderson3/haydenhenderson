@@ -1,33 +1,10 @@
-import { useState } from 'react'
 import { Review } from '../types'
-import ReviewForm from './ReviewForm'
-import { useOwner } from '../contexts/OwnerContext'
 
 interface ReviewCardProps {
   review: Review
-  onDelete: (id: string) => void
-  onUpdate: (id: string, updatedReview: Partial<Review>) => void
 }
 
-function ReviewCard({ review, onDelete, onUpdate }: ReviewCardProps) {
-  const { isOwner } = useOwner()
-  const [isEditing, setIsEditing] = useState(false)
-
-  const handleUpdate = (updatedReview: Review) => {
-    onUpdate(review.id, updatedReview)
-    setIsEditing(false)
-  }
-
-  if (isEditing) {
-    return (
-      <ReviewForm
-        initialReview={review}
-        onSubmit={handleUpdate}
-        onCancel={() => setIsEditing(false)}
-      />
-    )
-  }
-
+function ReviewCard({ review }: ReviewCardProps) {
   const date = new Date(review.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -66,31 +43,13 @@ function ReviewCard({ review, onDelete, onUpdate }: ReviewCardProps) {
         </div>
       )}
 
-      <div className="prose prose-lg max-w-none mb-6">
+      <div className="prose prose-lg max-w-none">
         <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
           {review.text}
         </p>
       </div>
-
-      {isOwner && (
-        <div className="flex gap-3 pt-6 border-t border-gray-200">
-          <button
-            onClick={() => setIsEditing(true)}
-            className="px-5 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => onDelete(review.id)}
-            className="px-5 py-2.5 bg-red-50 text-red-700 font-medium rounded-lg hover:bg-red-100 transition-colors"
-          >
-            Delete
-          </button>
-        </div>
-      )}
     </article>
   )
 }
 
 export default ReviewCard
-

@@ -1,33 +1,10 @@
-import { useState } from 'react'
 import { PublishedWork } from '../types'
-import PublishedWorkForm from './PublishedWorkForm'
-import { useOwner } from '../contexts/OwnerContext'
 
 interface PublishedWorkCardProps {
   work: PublishedWork
-  onDelete: (id: string) => void
-  onUpdate: (id: string, updatedWork: Partial<PublishedWork>) => void
 }
 
-function PublishedWorkCard({ work, onDelete, onUpdate }: PublishedWorkCardProps) {
-  const { isOwner } = useOwner()
-  const [isEditing, setIsEditing] = useState(false)
-
-  const handleUpdate = (updatedWork: PublishedWork) => {
-    onUpdate(work.id, updatedWork)
-    setIsEditing(false)
-  }
-
-  if (isEditing) {
-    return (
-      <PublishedWorkForm
-        initialWork={work}
-        onSubmit={handleUpdate}
-        onCancel={() => setIsEditing(false)}
-      />
-    )
-  }
-
+function PublishedWorkCard({ work }: PublishedWorkCardProps) {
   return (
     <article className="bg-white rounded-lg shadow-md border border-gray-200 p-8 hover:shadow-lg transition-shadow">
       <div className="flex flex-col sm:flex-row gap-6">
@@ -64,7 +41,7 @@ function PublishedWorkCard({ work, onDelete, onUpdate }: PublishedWorkCardProps)
           </div>
 
           {work.link && (
-            <div className="mb-6">
+            <div>
               <a
                 href={work.link}
                 target="_blank"
@@ -75,23 +52,6 @@ function PublishedWorkCard({ work, onDelete, onUpdate }: PublishedWorkCardProps)
               </a>
             </div>
           )}
-
-          {isOwner && (
-            <div className="flex gap-3 pt-6 border-t border-gray-200">
-              <button
-                onClick={() => setIsEditing(true)}
-                className="px-5 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => onDelete(work.id)}
-                className="px-5 py-2.5 bg-red-50 text-red-700 font-medium rounded-lg hover:bg-red-100 transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </article>
@@ -99,4 +59,3 @@ function PublishedWorkCard({ work, onDelete, onUpdate }: PublishedWorkCardProps)
 }
 
 export default PublishedWorkCard
-

@@ -1,58 +1,21 @@
-# Papers Folder
+# Papers
 
-This folder contains markdown files that can be ingested into your book reviews, short stories, and published works.
+This folder contains markdown files that are loaded at build time and displayed on the website.
 
-## Format
+## How It Works
 
-Each markdown file should start with frontmatter (YAML) that specifies the type and metadata:
+Vite reads all `.md` files from this folder when the site is built. Each file's frontmatter determines whether it appears as a book review, short story, or published work.
 
-### Book Review Format
+## Adding Content
 
-```markdown
----
-type: review
-title: Your Review Title
-createdAt: 2024-01-15T00:00:00.000Z
----
+1. Create a new `.md` file in this folder
+2. Add frontmatter at the top (see examples below)
+3. Write your content below the frontmatter
+4. Commit and deploy — the content will appear on the site
 
-Your review text goes here...
-```
+## Examples
 
-### Short Story Format
-
-```markdown
----
-type: story
-title: Your Story Title
-createdAt: 2024-01-15T00:00:00.000Z
----
-
-Your story text goes here...
-```
-
-### Published Work Format
-
-```markdown
----
-type: published
-title: Your Published Work Title
-description: A brief description
-publicationDate: 2024
-publisher: Publisher Name (optional)
-link: https://example.com (optional)
-createdAt: 2024-01-15T00:00:00.000Z
----
-
-Additional notes or content (optional)
-```
-
-## Usage
-
-Run the ingestion script to process all markdown files in this folder:
-
-```bash
-npm run ingest:papers
-```
-
-Or use the utility function in your code to process files manually.
-
+See the example files in this folder:
+- `example-review.md` — Book review
+- `example-story.md` — Short story
+- `example-published.md` — Published work
