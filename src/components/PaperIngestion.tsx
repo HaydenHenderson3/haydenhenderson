@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import { ingestMarkdownContent } from '../utils/ingestPapers'
-import { storage } from '../utils/storage'
 
 interface PaperIngestionProps {
   onIngestComplete?: () => void
