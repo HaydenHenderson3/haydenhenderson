@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "tsx scripts/convertPdfs.ts",
     "dev": "vite",
+    "prebuild": "tsx scripts/convertPdfs.ts",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -17,12 +19,15 @@
     "remark-breaks": "^4.0.0"
   },
   "devDependencies": {
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
+    "pdf-parse": "^1.1.1",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
+    "tsx": "^4.21.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   }
