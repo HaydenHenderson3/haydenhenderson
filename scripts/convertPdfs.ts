@@ -7,7 +7,7 @@ import pdf from 'pdf-parse/lib/pdf-parse.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const PAPERS_DIR = path.resolve(__dirname, '..', 'papers')
-const GENERATED_DIR = path.join(PAPERS_DIR, '.generated')
+const GENERATED_DIR = path.join(PAPERS_DIR, 'generated')
 
 function slugify(name: string): string {
   return name
@@ -64,7 +64,7 @@ async function convertPdfs() {
       fs.writeFileSync(outputPath, `${frontmatter}\n\n${text}\n`)
       generatedFiles.add(`${slug}.md`)
 
-      console.log(`Converted: ${file} -> .generated/${slug}.md`)
+      console.log(`Converted: ${file} -> generated/${slug}.md`)
     } catch (error) {
       console.error(`Failed to convert ${file}:`, error)
     }
@@ -75,7 +75,7 @@ async function convertPdfs() {
   for (const file of existingGenerated) {
     if (!generatedFiles.has(file)) {
       fs.unlinkSync(path.join(GENERATED_DIR, file))
-      console.log(`Removed stale: .generated/${file}`)
+      console.log(`Removed stale: generated/${file}`)
     }
   }
 }

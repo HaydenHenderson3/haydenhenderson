@@ -43,7 +43,7 @@ Content flows in one direction: markdown files are read at build time by `src/da
 
 ```
 ├── papers/                      # Markdown and PDF content (read at build time)
-│   ├── .generated/              # Auto-generated .md files from PDFs (gitignored)
+│   ├── generated/               # Auto-generated .md files from PDFs (gitignored)
 │   ├── README.md                # Instructions for adding content
 │   ├── example-review.md        # Example book review
 │   ├── example-story.md         # Example short story
@@ -112,8 +112,8 @@ PDF files are also supported as a content source for **short stories**:
 3. It extracts text from the PDF using `pdf-parse` and writes a generated `.md` file into `papers/.generated/`.
 4. The title is derived from the filename (e.g., `My New Story.pdf` becomes `My New Story`).
 5. The `createdAt` date is taken from the PDF file's last-modified time.
-6. Generated `.md` files in `papers/.generated/` are gitignored — they are build artifacts.
-7. The existing `import.meta.glob` picks up `papers/.generated/*.md` automatically.
+6. Generated `.md` files in `papers/generated/` are gitignored — they are build artifacts.
+7. The existing `import.meta.glob` picks up `papers/generated/*.md` automatically.
 
 PDFs are always ingested as `type: story`. For reviews or published works, use markdown files with the appropriate frontmatter.
 
