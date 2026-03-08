@@ -10,6 +10,7 @@ export interface Story {
   id: string
   title: string
   text: string
+  pdfFile?: string
   createdAt: string
 }
 

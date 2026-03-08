@@ -21,6 +21,10 @@ This is a static personal writing portfolio for Hayden Henderson. It displays bo
 ```mermaid
 flowchart TD
     subgraph buildTime [Build Time]
+        PDF["papers/*.pdf files"]
+        Script["scripts/convertPdfs.ts\n(pre-build)"]
+        CopyPDF["public/stories/*.pdf\n(static assets)"]
+        GenMD["papers/generated/*.md\n(metadata only, pdfFile field)"]
         MD["papers/*.md files"]
         Glob["Vite import.meta.glob\n(eager, raw)"]
         Parser["parseFrontmatter()\nin src/data/papers.ts"]
@@ -31,13 +35,19 @@ flowchart TD
         Pages["Page components import arrays directly"]
         RMD["react-markdown + remark-breaks\nrenders body text"]
         Preserve["preserveIndentation()\nconverts leading whitespace\nto non-breaking spaces"]
+        Iframe["iframe embed\nfor PDF stories"]
     end
 
+    PDF --> Script --> CopyPDF
+    Script --> GenMD
+    GenMD --> Glob
     MD --> Glob --> Parser --> Arrays
-    Arrays --> Pages --> Preserve --> RMD
+    Arrays --> Pages
+    Pages -->|"if story.pdfFile"| Iframe
+    Pages -->|"if story.text"| Preserve --> RMD
 ```
 
-Content flows in one direction: markdown files are read at build time by `src/data/papers.ts`, parsed into typed arrays, and imported directly by page components. There are no API calls, no runtime fetching, and no client-side state management for content.
+Content flows in one direction: markdown files are read at build time by `src/data/papers.ts`, parsed into typed arrays, and imported directly by page components. PDF stories are served as static assets and displayed via the browser's built-in PDF viewer (iframe). There are no API calls, no runtime fetching, and no client-side state management for content.
 
 ## File Structure
 
@@ -49,10 +59,11 @@ Content flows in one direction: markdown files are read at build time by `src/da
 │   ├── example-story.md         # Example short story
 │   └── example-published.md     # Example published work
 ├── scripts/
-│   └── convertPdfs.ts           # Pre-build script: extracts PDF text into .generated/*.md
+│   └── convertPdfs.ts           # Pre-build script: copies PDFs to public/stories/ and generates metadata-only .md files
 ├── public/                      # Static assets served as-is
 │   ├── backg.jpg                # Background image
-│   └── pp.jpg                   # Profile picture
+│   ├── pp.jpg                   # Profile picture
+│   └── stories/                 # PDF files copied here by pre-build script (gitignored)
 ├── src/
 │   ├── App.tsx                  # Router setup, Analytics component
 │   ├── main.tsx                 # React DOM entry point
@@ -75,7 +86,7 @@ Content flows in one direction: markdown files are read at build time by `src/da
 │       ├── Home.tsx             # Landing page with nav buttons
 │       ├── Reviews.tsx          # Lists all reviews using ReviewCard
 │       ├── Stories.tsx          # Lists all stories with plaintext excerpts
-│       ├── StoryDetail.tsx      # Full story view (uses react-markdown)
+│       ├── StoryDetail.tsx      # Full story view (react-markdown for text, iframe for PDFs)
 │       └── PublishedWorks.tsx   # Lists all published works using PublishedWorkCard
 ├── vercel.json                  # SPA rewrite rule for Vercel deployment
 ├── vite.config.ts               # Vite config (React plugin)
@@ -105,15 +116,18 @@ All content lives in the `papers/` directory as markdown files with YAML frontma
 
 ### Adding content (PDF)
 
-PDF files are also supported as a content source for **short stories**:
+PDF files are supported as a content source for **short stories** and are displayed exactly as-is via the browser's built-in PDF viewer:
 
 1. Drop a `.pdf` file into `papers/` (e.g., `papers/My New Story.pdf`).
 2. The pre-build script (`scripts/convertPdfs.ts`) automatically runs before `dev` and `build`.
-3. It extracts text from the PDF using `pdf-parse` and writes a generated `.md` file into `papers/.generated/`.
-4. The title is derived from the filename (e.g., `My New Story.pdf` becomes `My New Story`).
-5. The `createdAt` date is taken from the PDF file's last-modified time.
-6. Generated `.md` files in `papers/generated/` are gitignored — they are build artifacts.
-7. The existing `import.meta.glob` picks up `papers/generated/*.md` automatically.
+3. It copies the PDF to `public/stories/{slug}.pdf` for static serving.
+4. It generates a metadata-only `.md` file in `papers/generated/` with a `pdfFile` frontmatter field pointing to the PDF URL.
+5. The title is derived from the filename (e.g., `My New Story.pdf` becomes `My New Story`).
+6. The `createdAt` date is taken from the PDF file's last-modified time.
+7. Both `papers/generated/` and `public/stories/` are gitignored — they are build artifacts.
+8. The existing `import.meta.glob` picks up `papers/generated/*.md` automatically.
+9. `StoryDetail.tsx` checks for `story.pdfFile` and renders an `<iframe>` instead of markdown.
+10. `Stories.tsx` shows only the title and date for PDF stories (no text excerpt).
 
 PDFs are always ingested as `type: story`. For reviews or published works, use markdown files with the appropriate frontmatter.
 
@@ -124,6 +138,7 @@ PDFs are always ingested as `type: story`. For reviews or published works, use m
 | `type`            | Yes      | all         | `review`, `story`, or `published`                    |
 | `title`           | Yes      | all         | Title of the piece                                   |
 | `createdAt`       | No       | all         | ISO date string; defaults to build time if omitted   |
+| `pdfFile`         | No       | story       | URL path to PDF (e.g., `/stories/my-story.pdf`); auto-generated by pre-build script |
 | `description`     | No       | published   | Short description; falls back to first 200 chars of body |
 | `publicationDate` | No       | published   | Year or date of publication                          |
 | `publisher`       | No       | published   | Publisher name                                       |
@@ -171,9 +186,9 @@ Body text is rendered using `react-markdown` with the `remark-breaks` plugin (so
 Components that render markdown:
 - `src/components/ReviewCard.tsx` — renders `review.text`
 - `src/components/PublishedWorkCard.tsx` — renders `work.description`
-- `src/pages/StoryDetail.tsx` — renders `story.text`
+- `src/pages/StoryDetail.tsx` — renders `story.text` for markdown stories, or an `<iframe>` for PDF stories (when `story.pdfFile` is set)
 
-The `Stories.tsx` listing page does NOT use react-markdown; it strips markdown syntax with regex to produce a plaintext excerpt.
+The `Stories.tsx` listing page does NOT use react-markdown; it strips markdown syntax with regex to produce a plaintext excerpt. PDF stories show only title and date (no excerpt).
 
 ## Routing and Deployment
 

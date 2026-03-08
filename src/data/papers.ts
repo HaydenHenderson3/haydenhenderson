@@ -4,6 +4,7 @@ interface PaperFrontmatter {
   type: 'review' | 'story' | 'published'
   title: string
   createdAt?: string
+  pdfFile?: string
   description?: string
   publicationDate?: string
   publisher?: string
@@ -83,6 +84,7 @@ for (const [filepath, content] of Object.entries(paperFiles)) {
         id,
         title: frontmatter.title,
         text: body,
+        pdfFile: frontmatter.pdfFile,
         createdAt,
       })
       break

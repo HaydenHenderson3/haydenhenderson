@@ -57,7 +57,9 @@ function Stories() {
                   {story.title}
                 </h2>
                 <p className="text-sm text-gray-500 mb-4">{formatDate(story.createdAt)}</p>
-                <p className="text-gray-600 leading-relaxed text-base">{getExcerpt(story.text)}</p>
+                {!story.pdfFile && (
+                  <p className="text-gray-600 leading-relaxed text-base">{getExcerpt(story.text)}</p>
+                )}
               </Link>
             </div>
           ))

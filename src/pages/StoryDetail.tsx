@@ -48,9 +48,18 @@ function StoryDetail() {
           <p className="text-sm text-gray-500">{date}</p>
         </header>
 
-        <div className="prose prose-lg max-w-none text-gray-700">
-          <Markdown remarkPlugins={[remarkBreaks]}>{preserveIndentation(story.text)}</Markdown>
-        </div>
+        {story.pdfFile ? (
+          <iframe
+            src={story.pdfFile}
+            className="w-full rounded-lg border border-gray-200"
+            style={{ height: '85vh' }}
+            title={story.title}
+          />
+        ) : (
+          <div className="prose prose-lg max-w-none text-gray-700">
+            <Markdown remarkPlugins={[remarkBreaks]}>{preserveIndentation(story.text)}</Markdown>
+          </div>
+        )}
       </article>
     </div>
   )
